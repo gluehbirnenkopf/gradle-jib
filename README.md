@@ -1,5 +1,5 @@
 # gradle-jib
-Repository which integrates spring boot hello world with google jib.
+Repository which integrates spring boot hello world with [google jib](https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin).
 
 To build a docker image without requiring a docker deamon, execute:
 ```bash
