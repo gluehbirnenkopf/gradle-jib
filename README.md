@@ -8,3 +8,5 @@ To build a docker image without requiring a docker deamon, execute:
 
 This will use `gradle.properties` to parameterize the JIB configuration inside `build.gradle`.
 As there are sensitive information like username + password, please configure them in your local user `~/.gradle/gradle.properties`.
+
+All other actions can be taken from the official [Gradle JIB docs](https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin).
