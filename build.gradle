@@ -1,0 +1,64 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.0.5.RELEASE'
+    }
+}
+
+
+plugins {
+	id 'com.google.cloud.tools.jib' version '0.9.11'
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+bootJar {
+    baseName = 'gs-spring-boot'
+    version =  '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile("org.springframework.boot:spring-boot-starter-web")
+    testCompile("junit:junit")
+}
+
+
+//Taks definition:
+//tasks.build.dependsOn tasks.jib
+tasks.build.dependsOn tasks.jibDockerBuild
+tasks.jib.group = "docker"
+tasks.jib.description = "Builds your container image into the remote registry."
+tasks.jibDockerBuild.group = "docker"
+tasks.jibDockerBuild.description = "Builds to Docker daemon locally."
+tasks.jibBuildTar.group = "docker"
+tasks.jibBuildTar.description = "Builds an image tarball."
+tasks.jibExportDockerContext.group = "docker"
+tasks.jibExportDockerContext.description = "Exports a Docker context so that you can build with Docker."
+
+//Config:
+jib {
+	from {
+		image = "${baseImage}"
+	}
+	to {
+	  	image = "gluehbirnenkopf/${rootProject.name}:${version}"
+	  	auth {
+      		username = "${registryUser}" // Defined in 'gradle.properties'.
+      		password = "${registryPassword}"
+		}
+	}
+}
