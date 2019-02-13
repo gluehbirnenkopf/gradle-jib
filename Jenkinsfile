@@ -41,7 +41,7 @@ podTemplate(label: 'ciPod', cloud: cloud, serviceAccount: serviceAccount, kubena
                 sh """
                         cd helm/
                         helm init --client-only
-                        helm upgrade --install .
+                        helm upgrade --install --name ${env.JOB_NAME} .
                 """
             }
         }
