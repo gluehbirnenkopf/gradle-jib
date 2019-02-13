@@ -8,7 +8,7 @@ podTemplate(label: 'ciPod', cloud: cloud, serviceAccount: serviceAccount, kubena
         envVar(key: 'NAMESPACE', value: kubenamespace)
     ],
     containers: [
-        containerTemplate(name: 'java-builder', image: 'openjdk:8-jre-alpine', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'java-builder', image: 'openjdk:8-jdk-slim', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:v2.12.3', ttyEnabled: true, command: 'cat')
   ]) {
 
