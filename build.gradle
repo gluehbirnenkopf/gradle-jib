@@ -55,7 +55,7 @@ jib {
 		image = "${baseImage}"
 	}
 	to {
-	  	image = "gluehbirnenkopf/${rootProject.name}:${version}"
+	  	image = "${dockerRegistryName}/${rootProject.name}:${version}"
 	  	auth {
       		username = "${registryUser}" // Defined in 'gradle.properties'.
       		password = "${registryPassword}"
