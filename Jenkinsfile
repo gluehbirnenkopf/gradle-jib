@@ -43,6 +43,7 @@ podTemplate(label: 'ciPod', cloud: cloud, serviceAccount: serviceAccount, kubena
                         #helm install --name=${env.APPNAME}-${env.BRANCH_NAME} --set name=${env.APPNAME}-${env.BRANCH_NAME} --set image=registry.eu-de.bluemix.net/blw-msa/${env.APPNAME}:${env.BRANCH_NAME} --set ingressSubdomain=helmtest . 
                         helm upgrade --install ${env.APPNAME}-${env.BRANCH_NAME} --set appname=${env.APPNAME}-${env.BRANCH_NAME} --set image=registry.eu-de.bluemix.net/blw-msa/${env.APPNAME}:${env.BRANCH_NAME} --set ingressSubdomain=helmtest .
                 """
+            }
         }
     }
 }
