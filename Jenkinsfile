@@ -38,10 +38,11 @@ podTemplate(label: 'ciPod', cloud: cloud, serviceAccount: serviceAccount, kubena
         }
         container('helm') {
             stage('Deploy new Docker Image') {
+                appName = sh(returnStdout: true, script: 'echo ${PWD##*/}')
                 sh """
                         cd helm/
                         helm init --client-only
-                        helm upgrade --install --name ${env.JOB_NAME} .
+                        helm upgrade --install ${appName}-${env.BRANCH_NAME} . 
                 """
             }
         }
