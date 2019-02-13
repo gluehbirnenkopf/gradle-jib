@@ -1,0 +1,167 @@
+{{- if not (.Values.configMap.name) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.appname }}
+  labels:
+    app: {{ .Values.appname }}
+data:
+  application.yaml: |
+{{ .Values.configMap.values | indent 4 }}
+{{- end }}
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Values.appname }}
+  labels:
+    app: {{ .Values.appname }}
+spec:
+  replicas: {{ .Values.deploymentStrategy.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appname }}
+    spec:
+      strategy:
+       type: RollingUpdate
+       rollingUpdate:
+         maxSurge: 1
+         maxUnavailable: 0
+      serviceAccountName: {{ .Values.appname }}
+      automountServiceAccountToken: true
+      containers:
+      - name: {{ .Values.appname }}
+        image: {{ .Values.image }}
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "256Mi"
+          limits:
+            memory: "2048Mi"
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.healthCheck.path }}
+            port: {{ .Values.healthCheck.port }}
+          initialDelaySeconds: {{ .Values.healthCheck.initialDelaySeconds }}
+          periodSeconds: {{ .Values.healthCheck.periodSeconds }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.healthCheck.path }}
+            port: {{ .Values.healthCheck.port }}
+          initialDelaySeconds: {{ .Values.healthCheck.initialDelaySeconds }}
+          periodSeconds: {{ .Values.healthCheck.periodSeconds }}
+          failureThreshold: {{ .Values.healthCheck.failureThreshold }}
+        ports: 
+        - containerPort: 8080
+          name: camundaadmin
+        env:
+        - name: spring.cloud.kubernetes.config.enabled
+          value: "true"
+        - name: spring.cloud.kubernetes.config.enableApi
+          value: "true"          
+        - name: spring.cloud.kubernetes.config.name
+          {{- if .Values.configMap.name }}
+          value: {{ .Values.configMap.name }}
+          {{- else }}
+          value: {{ .Values.appname }}
+          {{- end }}
+        - name: spring.cloud.kubernetes.config.paths
+          value: /home/configmaps
+        volumeMounts:
+        - name: application-props
+          mountPath: /home/configmaps
+      volumes:
+      - name: application-props
+        configMap:
+          {{- if .Values.configMap.name }}
+          name: {{ .Values.configMap.name }}
+          {{- else }}
+          name: {{ .Values.appname }}
+          {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.appname }}
+  labels:
+    app: {{ .Values.appname }}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ .Values.appname }}
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP
+---
+{{- if (.Values.Ingress.enabled) }}
+{{if eq .Values.Ingress.kind "Route"}}
+apiVersion: {{ .Values.Ingress.api }}
+kind: {{ .Values.Ingress.kind }}
+metadata:
+  name: {{ .Values.appname }}
+spec:
+  host: {{ .Values.ingress }}
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: {{ .Values.appname }}
+    weight: 100
+  wildcardPolicy: None
+{{ else }}
+apiVersion: {{ .Values.Ingress.api }}
+kind: {{ .Values.Ingress.kind }}
+metadata:
+  name: {{ .Values.appname }}
+  labels:
+    app: {{ .Values.appname }}
+spec:
+  tls: 
+  - hosts: 
+    - {{ .Values.ingress }}
+    secretName: blw-msa-ks01
+  rules:
+  - host: {{ .Values.ingress }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Values.appname }}
+          servicePort: http
+{{- end }}
+{{- end }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.appname }}
+automountServiceAccountToken: true
+imagePullSecrets:
+- name: {{ .Values.pullSecret }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ .Values.appname }}
+rules:
+-  apiGroups: [""] # "" indicates the core API group
+   resources: ["pods","configmaps","secrets"]
+   verbs: ["get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ .Values.appname }}
+subjects:
+- kind: ServiceAccount
+  name: {{ .Values.appname }}
+roleRef:
+  kind: Role #this must be Role or ClusterRole
+# this must match the name of the
+# Role or ClusterRole you wish to bind to
+  name: {{ .Values.appname }}
+  apiGroup: rbac.authorization.k8s.io

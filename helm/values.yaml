@@ -1,0 +1,29 @@
+# Values get overwritten by gradle-jenkins
+appname: 
+image: gluehbirnenkopf/helloworld:1.0
+ingress: 
+domain: blw-msa-ks01eu-de.containers.appdomain.cloud
+
+# Values get taken from here
+pullSecret: bluemix-default-secret-regional
+Ingress:
+ enabled: false
+ api: extensions/v1beta1
+ kind: Ingress
+
+healthCheck:
+    path: /actuator/health
+    port: 8080
+    initialDelaySeconds: 30
+    periodSeconds: 3
+    failureThreshold: 10
+
+deploymentStrategy:
+    replicas: 2
+
+configMap:
+#  name: custom-config-name
+  #gradle will override, just variable definition
+  values: |-   
+    greeting:
+      example: test
