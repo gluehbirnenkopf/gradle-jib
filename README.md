@@ -1,5 +1,8 @@
 # gradle-jib
-Repository which integrates spring boot hello world with [google jib](https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin).
+This project integrates a sample springboot application with [Google jib](https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin). 
+
+## pre-requisites
+Please make sure that you have a [dockerhub account](https://hub.docker.com/). This is required to have a target registry available, to publish the image which is built using jib.
 
 To build a docker image without requiring a docker deamon, execute:
 ```bash
