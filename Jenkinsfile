@@ -33,6 +33,7 @@ podTemplate(label: 'ciPod', cloud: cloud, serviceAccount: serviceAccount, kubena
                         echo registryUser=${USERNAME}>>~/.gradle/gradle.properties | echo registryPassword=${PASSWORD}>>~/.gradle/gradle.properties
                         ./gradlew jib
                         """
+                }
             }
         }
         container('Deploy') {
