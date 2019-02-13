@@ -1,5 +1,5 @@
 # Values get overwritten by gradle-jenkins
-appname: 
+appname: helloworld
 image: gluehbirnenkopf/helloworld:1.0
 ingress: 
 domain: blw-msa-ks01eu-de.containers.appdomain.cloud
