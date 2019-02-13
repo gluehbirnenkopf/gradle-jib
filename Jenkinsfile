@@ -20,7 +20,7 @@ podTemplate(label: 'ciPod', cloud: cloud, serviceAccount: serviceAccount, kubena
             stage('Compile') {
                 sh """
                         chmod +x ./gradlew
-                        ./gradlew build
+                        ./gradlew assemble
                 """
             }
             stage('Unit Test') {
