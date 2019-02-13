@@ -31,6 +31,7 @@ podTemplate(label: 'ciPod', cloud: cloud, serviceAccount: serviceAccount, kubena
             stage('Build Image') {
                 withCredentials([usernamePassword(credentialsId: 'registryCredentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh """
+                        mkdir ~/.gradle
                         echo registryUser=${USERNAME}>>~/.gradle/gradle.properties | echo registryPassword=${PASSWORD}>>~/.gradle/gradle.properties
                         ./gradlew jib
                         """
