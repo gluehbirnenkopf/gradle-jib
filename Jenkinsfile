@@ -42,7 +42,7 @@ podTemplate(label: 'ciPod', cloud: cloud, serviceAccount: serviceAccount, kubena
                 sh """
                         cd helm/
                         helm init --client-only
-                        helm upgrade --install ${appName}-${env.BRANCH_NAME} . 
+                        helm upgrade --install helloworld-${env.BRANCH_NAME} . 
                 """
             }
         }
