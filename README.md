@@ -16,3 +16,5 @@ All other actions can be taken from the official [Gradle JIB docs](https://githu
 ## Kubernetes Usage
 To build & deploy this project automatically using Jenkins, run the Jenkinsfile.
 [Jenkins-helm](https://github.com/gluehbirnenkopf/jenkins-helm) is prepared for this and can be setup on Kubernetes (Bluemix IKS 1.10).
+
+Jenkins needs to have the docker credentials in place, in order to connect to your specific registry. Therefore please create an global credential called `registryCredentials` with username and password.
