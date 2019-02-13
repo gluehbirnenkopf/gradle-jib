@@ -5,11 +5,6 @@ def cloud = env.CLOUD ?: "kubernetes"
 def registryCredsID = env.REGISTRY_CREDENTIALS ?: "registry-credentials-id"
 def serviceAccount = env.SERVICE_ACCOUNT ?: "jenkins"
 
-// Pod Environment Variables
-def kubenamespace = "default"
-def regnamespace = "test"
-def registry = env.REGISTRY ?: "registry.eu-de.bluemix.net"
-
 podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, kubenamespace: kubenamespace, envVars: [
         envVar(key: 'NAMESPACE', value: kubenamespace),
         envVar(key: 'REGNAMESPACE', value: regnamespace),
