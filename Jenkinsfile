@@ -21,7 +21,6 @@ podTemplate(label: 'ciPod', cloud: cloud, serviceAccount: serviceAccount, kubena
                 sh """
                         ./gradlew build
                 """
-                }
             }
             stage('Unit Test') {
                 sh """
@@ -34,8 +33,8 @@ podTemplate(label: 'ciPod', cloud: cloud, serviceAccount: serviceAccount, kubena
                         echo registryUser=${USERNAME}>>~/.gradle/gradle.properties | echo registryPassword=${PASSWORD}>>~/.gradle/gradle.properties
                         ./gradlew jib
                         """
-                }
             }
+        }
         container('Deploy') {
             stage('Deploy new Docker Image') {
                 sh """
