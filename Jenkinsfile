@@ -19,6 +19,7 @@ podTemplate(label: 'ciPod', cloud: cloud, serviceAccount: serviceAccount, kubena
             //withCredentials not working with jenkins lts
             stage('Compile') {
                 sh """
+                        chmod +x ./gradlew
                         ./gradlew build
                 """
             }
