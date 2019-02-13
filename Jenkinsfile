@@ -33,6 +33,7 @@ podTemplate(label: 'ciPod', cloud: cloud, serviceAccount: serviceAccount, kubena
                     sh """
                         mkdir ~/.gradle
                         echo registryUser=${USERNAME}>>~/.gradle/gradle.properties | echo registryPassword=${PASSWORD}>>~/.gradle/gradle.properties
+                        cat ~/.gradle/gradle.properties
                         ./gradlew jib
                         """
                 }
