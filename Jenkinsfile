@@ -12,7 +12,8 @@ podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, kubena
         envVar(key: 'REGISTRY', value: registry)
     ],
     containers: [
-        containerTemplate(name: 'java-builder', image: 'openjdk:8-jre-alpine', ttyEnabled: true, command: 'cat')
+        containerTemplate(name: 'java-builder', image: 'openjdk:8-jre-alpine', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'java-builder', image: 'lachlanevenson/k8s-helm:v2.12.3', ttyEnabled: true, command: 'cat')
   ]) {
 
     node('mypod') {
@@ -20,7 +21,7 @@ podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, kubena
         env.BRANCH_NAME=env.BRANCH_NAME.toLowerCase()
         container('java-builder') {
             //withCredentials not working with jenkins lts
-            stage('Build Docker Image') {
+            stage('Build') {
                 withCredentials([usernamePassword(credentialsId: registryCredsID, 
                                                usernameVariable: 'USERNAME', 
                                                passwordVariable: 'PASSWORD')]) {
@@ -43,7 +44,7 @@ podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, kubena
                         """
                 }
             }
-            stage('Push Docker Image to Registry') {
+            stage('Deploy') {
                 withCredentials([usernamePassword(credentialsId: registryCredsID, 
                                                usernameVariable: 'USERNAME', 
                                                passwordVariable: 'PASSWORD')]) {
