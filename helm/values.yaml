@@ -22,8 +22,6 @@ deploymentStrategy:
     replicas: 2
 
 configMap:
-#  name: custom-config-name
-  #gradle will override, just variable definition
-  values: |-   
+  values: |-
     greeting:
-      example: test
+      text: I am Gluehbirnenkopf
