@@ -2,7 +2,7 @@
 appname: helloworld
 image: gluehbirnenkopf/helloworld:1.0
 ingress: 
-domain: blw-msa-ks01eu-de.containers.appdomain.cloud
+domain: some.ingress.host
 
 # Values get taken from here
 pullSecret: bluemix-default-secret-regional
