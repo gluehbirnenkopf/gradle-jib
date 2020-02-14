@@ -1,3 +1,6 @@
+
+![Travis](https://api.travis-ci.org/gluehbirnenkopf/gradle-jib.svg?branch=master)
+
 # Gradle-Jib
 This project integrates a sample springboot application with [Google jib](https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin) and demonstrates how images can be build manually as well as automatically.
 
