@@ -51,7 +51,9 @@ tasks.jibExportDockerContext.description = "Exports a Docker context so that you
 
 //Config:
 jib {
-	from {
+  container {
+  }
+  from {
 		image = "${baseImage}"
 	}
 	to {

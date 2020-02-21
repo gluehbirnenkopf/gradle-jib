@@ -30,3 +30,17 @@ To build & deploy this project automatically using Jenkins, run the Jenkinsfile.
 [Jenkins-helm](https://github.com/gluehbirnenkopf/jenkins-helm) is prepared for this and can be setup on Kubernetes (Bluemix IKS 1.10).
 
 Jenkins needs to have the docker credentials in place, in order to connect to your specific registry. Therefore please create an global credential called `registryCredentials` with username and password.
+
+### Plain kubectl
+```bash
+kubectl create configmap helloworld --from-literal="message.text=Hello from Gluehbirnenkopf in the cloud"
+
+kubectl create serviceaccount helloworld
+kubectl create role spring-cloud-config --verb=get --verb=watch --verb=list --resource=configmaps --resource=pods --resource=secrets
+kubectl create rolebinding helloworld --role=spring-cloud-config --serviceaccount=default:helloworld
+
+kubectl create deployment helloworld --image=gluehbirnenkopf/helloworld:1.1
+kubectl patch deployment helloworld -p '{"spec": {"template": {"spec": {"serviceAccountName": "helloworld"}}}}'
+
+kubectl expose deployment helloworld --port=8080
+```
