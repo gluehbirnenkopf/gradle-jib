@@ -31,16 +31,20 @@ To build & deploy this project automatically using Jenkins, run the Jenkinsfile.
 
 Jenkins needs to have the docker credentials in place, in order to connect to your specific registry. Therefore please create an global credential called `registryCredentials` with username and password.
 
-### Plain kubectl
+### kubectl setup (non-declarative)
 ```bash
+# Create Config Map for application properties
 kubectl create configmap helloworld --from-literal="message.text=Hello from Gluehbirnenkopf in the cloud"
 
+#Create RBAC
 kubectl create serviceaccount helloworld
 kubectl create role spring-cloud-config --verb=get --verb=watch --verb=list --resource=configmaps --resource=pods --resource=secrets
 kubectl create rolebinding helloworld --role=spring-cloud-config --serviceaccount=default:helloworld
 
+#Create Deployment of your image
 kubectl create deployment helloworld --image=gluehbirnenkopf/helloworld:1.1
 kubectl patch deployment helloworld -p '{"spec": {"template": {"spec": {"serviceAccountName": "helloworld"}}}}'
 
+#Expose the Service
 kubectl expose deployment helloworld --port=8080
 ```
