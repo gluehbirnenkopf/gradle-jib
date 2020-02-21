@@ -1,11 +1,11 @@
 # Values get overwritten by gradle-jenkins
 appname: helloworld
 image: gluehbirnenkopf/helloworld:1.0
-ingress: 
+ingress:
 domain: some.ingress.host
 
 # Values get taken from here
-pullSecret: bluemix-default-secret-regional
+pullSecret: default-de-icr-io
 Ingress:
  enabled: false
  api: extensions/v1beta1
@@ -23,5 +23,5 @@ deploymentStrategy:
 
 configMap:
   values: |-
-    greeting:
-      text: I am Gluehbirnenkopf
+    message:
+      text: I am Gluehbirnenkopf from the cloud
