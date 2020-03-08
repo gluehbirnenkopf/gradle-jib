@@ -38,8 +38,8 @@ dependencies {
 
 
 //Taks definition:
-//tasks.build.dependsOn tasks.jib
-tasks.build.dependsOn tasks.jibDockerBuild
+tasks.build.dependsOn tasks.jib
+//tasks.build.dependsOn tasks.jibDockerBuild
 tasks.jib.group = "docker"
 tasks.jib.description = "Builds your container image into the remote registry."
 tasks.jibDockerBuild.group = "docker"
