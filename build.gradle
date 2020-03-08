@@ -1,13 +1,6 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-}
-
-
 plugins {
 	id 'com.google.cloud.tools.jib' version '0.9.11'
-    id 'org.springframework.boot' version '2.1.1.RELEASE'
+	id 'org.springframework.boot' version '2.1.1.RELEASE'
 }
 
 apply plugin: 'java'
@@ -21,10 +14,8 @@ repositories {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-//define versions for complex dependencies
 dependencyManagement {
     imports {
-        //kubernetes integration
         mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Greenwich.RELEASE'
     }
 }
@@ -36,18 +27,9 @@ dependencies {
     testCompile("junit:junit")
 }
 
-
 //Taks definition:
 tasks.build.dependsOn tasks.jib
 //tasks.build.dependsOn tasks.jibDockerBuild
-tasks.jib.group = "docker"
-tasks.jib.description = "Builds your container image into the remote registry."
-tasks.jibDockerBuild.group = "docker"
-tasks.jibDockerBuild.description = "Builds to Docker daemon locally."
-tasks.jibBuildTar.group = "docker"
-tasks.jibBuildTar.description = "Builds an image tarball."
-tasks.jibExportDockerContext.group = "docker"
-tasks.jibExportDockerContext.description = "Exports a Docker context so that you can build with Docker."
 
 //Config:
 jib {
