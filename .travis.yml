@@ -10,4 +10,7 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 script:
-  - ./gradlew build --scan -s -PregistryUser=\$dokeruser-github -PregistryPassword=\$dockertoken-github 
+  - ./gradlew build --scan -s -PregistryUser=$dokeruser-github -PregistryPassword=$dockertoken-github -Pversion=$TRAVIS_TAG
+branches:
+  only:
+  - .*-RELEASE
