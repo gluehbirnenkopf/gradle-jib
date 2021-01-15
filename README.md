@@ -48,4 +48,3 @@ kubectl patch deployment helloworld -p '{"spec": {"template": {"spec": {"service
 #Expose the Service
 kubectl expose deployment helloworld --port=8080
 ```
-//dummy
